@@ -6,6 +6,10 @@ import { HttpClientModule } from '@angular/common/http';
 
 import { AppComponent } from './app.component';
 import { MenuComponent } from './menu/menu.component';
+import { ScannerComponent } from './scanner/scanner.component';
+import { QrCodeComponent } from './qr-code/qr-code.component';
+import { RatingComponent } from './rating/rating.component';
+import { RolePowerComponent } from './role-power/role-power.component';
 // const routes: Routes = [
 //   { path: 'abd', component: AbdComponent},
 //   { path: 'home', component: HomeComponent, children:[
@@ -21,7 +25,11 @@ const routes: Routes = [
 @NgModule({
   declarations: [
     AppComponent,
-    MenuComponent
+    MenuComponent,
+    ScannerComponent,
+    QrCodeComponent,
+    RatingComponent,
+    RolePowerComponent
   ],
   imports: [
     BrowserModule,
