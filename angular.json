@@ -98,6 +98,16 @@
             ],
             "scripts": []
           }
+        },
+        "deploy": {
+          "builder": "@angular/fire:deploy",
+          "options": {
+            "prerender": false,
+            "ssr": false,
+            "browserTarget": "PROTOTYPE:build:production",
+            "firebaseProject": "deep-dive-79893",
+            "firebaseHostingSite": "deep-dive-79893"
+          }
         }
       }
     }

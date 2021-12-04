@@ -1,0 +1,14 @@
+{
+  "projects": {
+    "default": "deep-dive-79893"
+  },
+  "targets": {
+    "deep-dive-79893": {
+      "hosting": {
+        "PROTOTYPE": [
+          "deep-dive-79893"
+        ]
+      }
+    }
+  }
+}

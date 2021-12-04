@@ -10,6 +10,14 @@ import { ScannerComponent } from './scanner/scanner.component';
 import { QrCodeComponent } from './qr-code/qr-code.component';
 import { RatingComponent } from './rating/rating.component';
 import { RolePowerComponent } from './role-power/role-power.component';
+
+import { initializeApp,provideFirebaseApp } from '@angular/fire/app';
+import { environment } from '../environments/environment';
+import { provideAnalytics,getAnalytics,ScreenTrackingService,UserTrackingService } from '@angular/fire/analytics';
+import { provideAuth,getAuth } from '@angular/fire/auth';
+import { provideDatabase,getDatabase } from '@angular/fire/database';
+import { provideStorage,getStorage } from '@angular/fire/storage';
+
 // const routes: Routes = [
 //   { path: 'abd', component: AbdComponent},
 //   { path: 'home', component: HomeComponent, children:[
@@ -19,7 +27,11 @@ import { RolePowerComponent } from './role-power/role-power.component';
 // ];
 
 const routes: Routes = [
-  { path: 'menu', component: MenuComponent}
+  { path: 'menu', component: MenuComponent},
+  { path: 'Scanner', component: ScannerComponent},
+  { path: 'QR Code', component: QrCodeComponent},
+  { path: 'Rating', component: RatingComponent},
+  { path: 'Role Power', component: RolePowerComponent}
 ];
 
 @NgModule({
@@ -34,14 +46,24 @@ const routes: Routes = [
   imports: [
     BrowserModule,
     RouterModule.forRoot(routes),
-    HttpClientModule
+    HttpClientModule,
+    provideFirebaseApp(() => initializeApp(environment.firebase)),
+    provideAnalytics(() => getAnalytics()),
+    provideAuth(() => getAuth()),
+    provideDatabase(() => getDatabase()),
+    provideStorage(() => getStorage())
   ],
   exports: [
     RouterModule
   ],
   providers: [
-    CookieService
+    CookieService,
+    ScreenTrackingService,UserTrackingService
   ],
   bootstrap: [AppComponent]
 })
-export class AppModule { }
+export class AppModule {
+
+  constructor()
+  {}
+}
