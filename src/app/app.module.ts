@@ -10,6 +10,7 @@ import { ScannerComponent } from './scanner/scanner.component';
 import { QrCodeComponent } from './qr-code/qr-code.component';
 import { RatingComponent } from './rating/rating.component';
 import { RolePowerComponent } from './role-power/role-power.component';
+import { HomeComponent } from './home/home.component';
 
 import { initializeApp,provideFirebaseApp } from '@angular/fire/app';
 import { environment } from '../environments/environment';
@@ -17,6 +18,9 @@ import { provideAnalytics,getAnalytics,ScreenTrackingService,UserTrackingService
 import { provideAuth,getAuth } from '@angular/fire/auth';
 import { provideDatabase,getDatabase } from '@angular/fire/database';
 import { provideStorage,getStorage } from '@angular/fire/storage';
+import { provideFirestore, getFirestore } from '@angular/fire/firestore';
+import { SignInComponent } from './sign-in/sign-in.component';
+import { SignUpComponent } from './sign-up/sign-up.component';
 
 // const routes: Routes = [
 //   { path: 'abd', component: AbdComponent},
@@ -31,7 +35,10 @@ const routes: Routes = [
   { path: 'Scanner', component: ScannerComponent},
   { path: 'QR Code', component: QrCodeComponent},
   { path: 'Rating', component: RatingComponent},
-  { path: 'Role Power', component: RolePowerComponent}
+  { path: 'Role Power', component: RolePowerComponent},
+  { path: 'home', component: HomeComponent, children:[
+    { path: 'sign_in', component: SignInComponent},
+    { path: 'sign_up', component: SignUpComponent}]}
 ];
 
 @NgModule({
@@ -41,7 +48,9 @@ const routes: Routes = [
     ScannerComponent,
     QrCodeComponent,
     RatingComponent,
-    RolePowerComponent
+    RolePowerComponent,
+    SignInComponent,
+    SignUpComponent
   ],
   imports: [
     BrowserModule,
@@ -51,7 +60,8 @@ const routes: Routes = [
     provideAnalytics(() => getAnalytics()),
     provideAuth(() => getAuth()),
     provideDatabase(() => getDatabase()),
-    provideStorage(() => getStorage())
+    provideStorage(() => getStorage()),
+    provideFirestore(() => getFirestore())
   ],
   exports: [
     RouterModule
