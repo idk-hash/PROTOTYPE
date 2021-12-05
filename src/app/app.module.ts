@@ -12,6 +12,10 @@ import { RatingComponent } from './rating/rating.component';
 import { RolePowerComponent } from './role-power/role-power.component';
 import { HomeComponent } from './home/home.component';
 
+import { DB } from './services/DB/db.service';
+import { FBOOT } from './services/FBOOT/fboot.service';
+import { CONF } from './services/CONF/conf.service';
+
 import { initializeApp,provideFirebaseApp } from '@angular/fire/app';
 import { environment } from '../environments/environment';
 import { provideAnalytics,getAnalytics,ScreenTrackingService,UserTrackingService } from '@angular/fire/analytics';
@@ -67,6 +71,9 @@ const routes: Routes = [
     RouterModule
   ],
   providers: [
+    DB,
+    FBOOT,
+    CONF,
     CookieService,
     ScreenTrackingService,UserTrackingService
   ],

@@ -1,6 +1,6 @@
 import { Component } from '@angular/core';
 import { Router } from '@angular/router';
-import { LocationStrategy } from '@angular/common';
+import { FBOOT } from './services/FBOOT/fboot.service';
 
 @Component({
   selector: 'app-root',
@@ -10,7 +10,7 @@ import { LocationStrategy } from '@angular/common';
 export class AppComponent {
   title = 'PROTOTYPE';
 
-  constructor (private router : Router)
-  {this.router.navigate(['menu']);}
+  constructor (private fboot : FBOOT)
+  {}
 
 }
