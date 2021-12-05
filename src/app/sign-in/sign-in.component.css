@@ -13,7 +13,7 @@ body {
   text-align: center;
 }
 
-.input {
+input {
   margin-top: 2vh;
   margin-left: 15vw;
   width: 30vw;
@@ -25,12 +25,12 @@ body {
   margin-left: 20vw;
   margin-top: 2vh;
   width: 20vw;
-  height: 5vw;
+  height: 5vh;
 }
 
 #switch {
-  margin-left: 25vw;
-  margin-top: 15vh;
-  width: 10vw;
+  margin-left: 20vw;
+  margin-top: 10vh;
+  width: 20vw;
   height: 5vw;
 }

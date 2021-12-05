@@ -16,7 +16,7 @@ export class FBOOT {
   constructor(private router: Router)
     {
 
-    //this.auth.signOut();
+    this.auth.signOut();
 
     this.auth.onAuthStateChanged(
       (user) =>

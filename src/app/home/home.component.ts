@@ -1,7 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 
-import { getAuth, createUserWithEmailAndPassword , signInWithEmailAndPassword , EmailAuthProvider} from "firebase/auth";
 import { getFirestore,collection, addDoc, doc, onSnapshot } from "firebase/firestore";
 
 @Component({
@@ -10,7 +9,6 @@ import { getFirestore,collection, addDoc, doc, onSnapshot } from "firebase/fires
   styleUrls: ['./home.component.css']
 })
 export class HomeComponent implements OnInit {
-  private auth = getAuth();
 
   constructor(private router : Router)
     {}//this.router.navigate(['home/sign_in']);}

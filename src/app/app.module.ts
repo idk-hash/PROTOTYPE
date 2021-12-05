@@ -3,6 +3,7 @@ import { BrowserModule } from '@angular/platform-browser';
 import { Routes, RouterModule } from '@angular/router';
 import { CookieService } from 'ngx-cookie-service';
 import { HttpClientModule } from '@angular/common/http';
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 
 import { AppComponent } from './app.component';
 import { MenuComponent } from './menu/menu.component';
@@ -12,7 +13,6 @@ import { RatingComponent } from './rating/rating.component';
 import { RolePowerComponent } from './role-power/role-power.component';
 import { HomeComponent } from './home/home.component';
 
-import { DB } from './services/DB/db.service';
 import { FBOOT } from './services/FBOOT/fboot.service';
 import { CONF } from './services/CONF/conf.service';
 
@@ -61,6 +61,8 @@ const routes: Routes = [
     HomeComponent
   ],
   imports: [
+    FormsModule,
+    ReactiveFormsModule,
     BrowserModule,
     RouterModule.forRoot(routes),
     HttpClientModule,
@@ -75,7 +77,6 @@ const routes: Routes = [
     RouterModule
   ],
   providers: [
-    DB,
     FBOOT,
     CONF,
     CookieService,

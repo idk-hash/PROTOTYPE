@@ -1,7 +1,28 @@
 <body>
   <p id="welcome">sign-in works!</p>
-  <input class="input" type="text" name="email"><br>
-  <input class="input" type="password" name="password"><br>
-  <button id="signin" class="button">Sign In</button>
+  <form [formGroup]="form" (ngSubmit)="onSubmit()">
+    <div class="form-group">
+        <input type="text" formControlName="username" />
+        <!-- <div *ngIf="submitted && f.username.errors" class="invalid-feedback">
+          <div *ngIf="f.username.errors.required">Username is required</div>
+        </div> -->
+    </div>
+    <div class="form-group">
+        <input type="password" formControlName="password" />
+        <!-- <div *ngIf="submitted && f.password.errors" class="invalid-feedback">
+          <div *ngIf="f.password.errors.required">Password is required</div>
+      </div> -->
+    </div>
+    <div class="form-group">
+      <button id="signin" [disabled]="loading">
+        <!-- <span *ngIf="loading" class="spinner-border spinner-border-sm mr-1"></span> -->
+        Login
+      </button>
+    </div>
+  </form>
+
+  <!-- <input id="log" class="input" type="text" name="email"><br>
+  <input id="log2" class="input" type="password" name="password"><br>
+  <button id="signin" class="button"  >Sign In</button> -->
   <button id="switch" class="button" (click)="this.switch()">Sign Up</button>
 </body>
