@@ -25,6 +25,7 @@ import { provideStorage,getStorage } from '@angular/fire/storage';
 import { provideFirestore, getFirestore } from '@angular/fire/firestore';
 import { SignInComponent } from './sign-in/sign-in.component';
 import { SignUpComponent } from './sign-up/sign-up.component';
+import { Router } from 'express';
 
 // const routes: Routes = [
 //   { path: 'abd', component: AbdComponent},
@@ -42,7 +43,9 @@ const routes: Routes = [
   { path: 'Role Power', component: RolePowerComponent},
   { path: 'home', component: HomeComponent, children:[
     { path: 'sign_in', component: SignInComponent},
-    { path: 'sign_up', component: SignUpComponent}]}
+    { path: 'sign_up', component: SignUpComponent}]},
+  { path: 'sign_in', component: SignInComponent},
+  { path: 'sign_up', component: SignUpComponent}
 ];
 
 @NgModule({
@@ -54,7 +57,8 @@ const routes: Routes = [
     RatingComponent,
     RolePowerComponent,
     SignInComponent,
-    SignUpComponent
+    SignUpComponent,
+    HomeComponent
   ],
   imports: [
     BrowserModule,

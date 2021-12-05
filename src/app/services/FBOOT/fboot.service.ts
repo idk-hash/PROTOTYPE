@@ -1,10 +1,9 @@
 import { Injectable } from '@angular/core';
 import { Router } from '@angular/router';
-import { CookieService } from 'ngx-cookie-service';
-import { getAuth, createUserWithEmailAndPassword } from "firebase/auth";
+import { getAuth, createUserWithEmailAndPassword , signInWithEmailAndPassword , EmailAuthProvider} from "firebase/auth";
+import { doc, getFirestore, collection, onSnapshot } from "firebase/firestore";
 
-import { DB } from '../DB/db.service';
-import { CONF } from '../CONF/conf.service';
+const nav = ['menu', 'home']
 
 @Injectable({
   providedIn: 'root'
@@ -12,20 +11,34 @@ import { CONF } from '../CONF/conf.service';
 
 export class FBOOT {
 
-  constructor()
-      // private router: Router,
-      // private db: DB,
-      // private cookieService : CookieService)
-      {
-        const auth = getAuth();
-        createUserWithEmailAndPassword(auth, "mamamiaaaaaaa@gmail.com", "password")
-      }
-    // {this.db.connectToServer();
-    // if(this.cookieService.check("UNIFLAG"))
-    //   {this.router.navigate(['abd']);}
-    // else
-    //   {this.cookieService.set("UNIFLAG", "true", 1);
-    //   this.router.navigate(['fbootapp']);}}
+  private auth = getAuth();
 
+  constructor(private router: Router)
+    {
+
+    //this.auth.signOut();
+
+    this.auth.onAuthStateChanged(
+      (user) =>
+        {if (user)
+          { this.router.navigate(['menu']); }
+        else
+          { this.router.navigate(['home/sign_in']); }
+        }
+      );
+    }
+
+
+  //   this.get_authToken();}
+
+  // private get_authToken()
+  //   {if(this.cookieService.check("connCHECK"))
+  //     {const unsub = onSnapshot(doc(this.db, "users", this.cookieService.get("connCHECK") ),
+  //       (data) =>
+  //         { console.log("Current data: ", data.data()); });
+  //     this.router.navigate(['menu']);}
+  //   else
+  //     {this.cookieService.set("connCHECK", "N6jiinBATF9dmtNcACuC", 1);
+  //     this.router.navigate(['home']);}}
 }
 

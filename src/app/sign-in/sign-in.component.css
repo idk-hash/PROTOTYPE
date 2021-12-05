@@ -1,0 +1,36 @@
+body {
+  border-radius: 25px;
+  border: 2px solid rgb(250, 198, 119);
+  background: rgb(250, 255, 219);
+  margin-left: 20vw;
+  margin-top: 10vh;
+  width: 60vw;
+  height: 60vh;
+}
+
+#welcome {
+  padding-top: 15vh;
+  text-align: center;
+}
+
+.input {
+  margin-top: 2vh;
+  margin-left: 15vw;
+  width: 30vw;
+  height: 3vh;
+  text-align: center;
+}
+
+#signin {
+  margin-left: 20vw;
+  margin-top: 2vh;
+  width: 20vw;
+  height: 5vw;
+}
+
+#switch {
+  margin-left: 25vw;
+  margin-top: 15vh;
+  width: 10vw;
+  height: 5vw;
+}

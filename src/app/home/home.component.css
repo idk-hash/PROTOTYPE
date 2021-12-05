@@ -1,0 +1,12 @@
+body {
+  height: 100vh;
+  width: 100vw;
+  background-color: rgb(255, 253, 245);
+}
+
+#welcome {
+  color: rgb(49, 20, 0);
+  background: rgb(255, 221, 148);
+  padding-top: 8vh;
+  text-align: center;
+}
