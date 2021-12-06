@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
-import { Router } from '@angular/router';
+import { LocationStrategy } from '@angular/common';
+import { getAuth } from '@firebase/auth';
 
 @Component({
   selector: 'app-menu',
@@ -7,15 +8,16 @@ import { Router } from '@angular/router';
   styleUrls: ['./menu.component.css']
 })
 export class MenuComponent implements OnInit {
+  private auth = getAuth();
 
-  constructor(private router: Router) { }
+  constructor( private locationStrategy : LocationStrategy)
+    {}
 
-  ngOnInit(): void { }
+  ngOnInit(): void
+    {history.pushState(null, "", location.href);
+    this.locationStrategy.onPopState(() => {
+    history.pushState(null, "", location.href);}); }
 
-  public haha(event: { currentTarget: any; })
-  {
-     this.router.navigate([event.currentTarget.textContent]);
-    //alert(event.currentTarget.textContent)
-  }
-
+  public logout()
+    {this.auth.signOut();}
 }
