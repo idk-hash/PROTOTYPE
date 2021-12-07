@@ -1,1 +1,29 @@
-<p>scanner works!</p>
+<div class="scanner-shell">
+
+
+	<!-- <zxing-scanner #scanner start="true" [(device)]="this.scanner.device" ></zxing-scanner> -->
+  <!-- <zxing-scanner #scanner [autofocusEnabled]="true" [autostart]="false" [enable]="true"  [device]="currentDevice"></zxing-scanner> -->
+
+  <!-- <div #ddiv ></div> -->
+
+  <!-- <zxing-scanner #scanner ></zxing-scanner> -->
+
+  <zxing-scanner #scanner [autostart]="false" [device]="currentDevice" [formats]="allowedFormats" ></zxing-scanner>
+  <!-- <zxing-scanner #scanner
+  start="true"
+  [autofocusEnabled]="true"
+  [enable]="true"
+  [(device)]="this.currentDevice"
+  scannerEnabled="true"
+  [tryHarder]="true">
+  </zxing-scanner> -->
+
+<!-- <video></video> -->
+
+	<!-- <section class="results" *ngIf="qrResultString">
+		<small>Result</small>
+		<strong>{{ qrResultString}}</strong>
+	</section> -->
+
+</div>
+
