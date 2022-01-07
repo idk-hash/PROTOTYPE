@@ -1,6 +1,9 @@
 import { Component, OnInit, ViewChild , AfterViewInit, ElementRef } from '@angular/core';
 import { ZXingScannerComponent } from '@zxing/ngx-scanner';
+import { Router } from '@angular/router';
+
 //import { ZXingScannerModule } from '@zxing/ngx-scanner';
+import adapter from 'webrtc-adapter';
 
 //import { Result } from '@zxing/library';
 import { BarcodeFormat } from '@zxing/library';
@@ -12,7 +15,7 @@ import { Stream } from 'stream';
 // const videoSelect = document.querySelector('select#videoSource');
 // const selectors = [audioInputSelect, audioOutputSelect, videoSelect];
 
-var choice!: ConstrainDOMString;
+var choice!: string;
 
 @Component({
   selector: 'app-scanner',
@@ -20,6 +23,9 @@ var choice!: ConstrainDOMString;
   styleUrls: ['./scanner.component.css']
 })
 export class ScannerComponent implements AfterViewInit {
+
+  @ViewChild('vidchoice')
+  vidchoice!: HTMLSelectElement;
 
   @ViewChild('scanner', {static: true})
   scanner!: ZXingScannerComponent;
@@ -31,40 +37,85 @@ export class ScannerComponent implements AfterViewInit {
 
   hasDevices!: boolean;
   hasPermission!: boolean;
+
   // qrResultString!: string;
   // //qrResult!: Result;
 
+  //currentDevice = choice;
   availableDevices?: MediaDeviceInfo[];
   currentDevice!: MediaDeviceInfo;
 
   constraints : MediaStreamConstraints =
   {audio : false ,
-  video : { deviceId: choice}
+  video : true
+  // { deviceId: choice ? {exact : choice} : undefined }
     // {width: 640,
     // height: 640
     // { facingMode: "environment" }
   };
 
-  constructor()
+  constructor( private router : Router)
   {}
 
 
-    ngAfterViewInit()
+    async ngAfterViewInit()
     {
-    //console.log((await this.scanner.askForPermission()).valueOf());
 
-    //console.log(this.availableDevices);
-    //const test = await this.scanner.getAnyVideoDevice();
-    //console.log(test);
+      const videoSelect = document.querySelector('select#videoSource');
+      // const videoSelect = this.vidchoice;
 
-    try {
-      const stream = navigator.mediaDevices.getUserMedia(this.constraints).then( data => (this.handleSuccess(data)));
-      // this.handleSuccess(stream);
-    }
-    catch (e)
-    {
-      console.log(":(   // ", e);
-    }
+      const stream = await navigator.mediaDevices.getUserMedia(this.constraints);
+
+      await navigator.mediaDevices.enumerateDevices()
+        .then( eee => {
+          for (let i = 0; i !== eee.length; ++i) {
+            const deviceInfo = eee[i];
+            const option = document.createElement('option');
+            option.value = deviceInfo.deviceId;
+            if (deviceInfo.kind === 'videoinput') {
+              option.text = deviceInfo.label;
+              videoSelect?.appendChild(option);
+            }
+          }
+        });
+
+      // videoSelect.onchange = this.start;
+
+      // const stream = await navigator.mediaDevices.getUserMedia({video: {deviceId: {exact: choice}}});
+      // const test = await this.scanner.updateVideoInputDevices();
+
+      // //this.scanner.reset()
+
+      // //this.scanner.device = test[0];
+      // //choice = test[0].deviceId;
+      // const aaa = test[2];
+      // choice = aaa.deviceId;
+      // this.scanner.device = aaa;
+      // console.log("objective is ", aaa);
+      // console.log("device = ", this.scanner.device);
+      // //console.log(aaa);
+
+      const video = document.querySelector('video');
+      video!.srcObject = stream;
+      video!.onloadedmetadata = function(e)
+        {video!.play();}
+
+
+      // console.log("device 2 = ", this.scanner.device);
+      //this.start();
+
+      //console.log(this.router.url)
+
+    // try {
+    //   //this.scanner.askForPermission();
+    //   const stream = navigator.mediaDevices.getUserMedia(this.constraints);
+    //   // this.handleSuccess(stream);
+    // }
+    // catch (e)
+    // {
+    //   console.log(":(   // ", e);
+    // }
+
     //choice = this.availableDevices
 
     // this.scanner.camerasFound.subscribe(
@@ -85,6 +136,32 @@ export class ScannerComponent implements AfterViewInit {
 
   }
 
+  public async start() {
+    console.log("WE SEE IT CHANGES")
+    navigator.mediaDevices.getUserMedia(this.constraints)
+    .then ( med =>
+      {med.getTracks()
+      .forEach ( track =>
+        {track.stop();});});
+    const videoSource = this.vidchoice.value;
+
+
+    console.log(this.vidchoice.v)
+
+
+    const constraints = {
+      audio: false,
+      video: {deviceId: videoSource ? {exact: videoSource} : undefined}
+    };
+    const stream = await navigator.mediaDevices.getUserMedia(constraints);
+    const video = document.querySelector('video');
+    video!.srcObject = stream;
+    video!.onloadedmetadata = function(e)
+      {video!.play();}
+  }
+
+
+
   // private launch(video : any)
   //   {navigator.mediaDevices.getUserMedia(this.constraints)
   //     .then(stream =>
@@ -97,7 +174,7 @@ export class ScannerComponent implements AfterViewInit {
   //       }
   //     );}
 
-  private handleSuccess(stream : MediaStream) {
+  private async handleSuccess(stream : MediaStream) {
     this.scanner.askForPermission();
 
 
@@ -109,12 +186,18 @@ export class ScannerComponent implements AfterViewInit {
     //     });
 
 
-    this.scanner.updateVideoInputDevices()
-    .then( aaa =>
-      {
-        console.log(aaa);
-        choice = aaa[0].deviceId
-      });
+    // const test = await this.scanner.updateVideoInputDevices();
+    // const aaa = test[3];
+    // console.log(aaa);
+    // choice = aaa.deviceId;
+
+    //console.log(adapter.extractVersion);
+
+    // .then( aaa =>
+    //   {
+    //     console.log(aaa);
+    //     choice = aaa[0].deviceId
+    //   });
 
     const video = document.querySelector('video');
     video!.srcObject = stream;

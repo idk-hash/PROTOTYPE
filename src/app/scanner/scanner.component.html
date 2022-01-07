@@ -6,9 +6,24 @@
 
   <!-- <div #ddiv ></div> -->
 
-  <!-- <zxing-scanner #scanner ></zxing-scanner> -->
+  <div class="select">
+    <label for="videoSource">Video source: </label><select #vidchoice id="videoSource" (change)="this.start()"></select>
+  </div>
 
-  <zxing-scanner #scanner [autostart]="false" [device]="currentDevice" [formats]="allowedFormats" ></zxing-scanner>
+  <zxing-scanner #scanner ></zxing-scanner>
+
+  <!-- <zxing-scanner #scanner [autostart]="true" [device]="this.currentDevice"></zxing-scanner> -->
+
+
+
+
+
+  <!-- <zxing-scanner #scanner [autostart]="true"></zxing-scanner> -->
+
+
+
+
+
   <!-- <zxing-scanner #scanner
   start="true"
   [autofocusEnabled]="true"

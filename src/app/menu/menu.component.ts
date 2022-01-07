@@ -1,6 +1,12 @@
 import { Component, OnInit } from '@angular/core';
 import { LocationStrategy } from '@angular/common';
 import { getAuth } from '@firebase/auth';
+import { DBService } from '../services/DB/db.service';
+
+
+// import { DBService } from '../services/DB/db.service';
+
+
 
 @Component({
   selector: 'app-menu',
@@ -9,6 +15,7 @@ import { getAuth } from '@firebase/auth';
 })
 export class MenuComponent implements OnInit {
   private auth = getAuth();
+  //private worker = new Worker('../../services/DB/db.worker', { type: 'module' });
 
   private constraints : MediaStreamConstraints =
   {audio : false ,
@@ -18,12 +25,16 @@ export class MenuComponent implements OnInit {
     // facingMode:  }
   };
 
-  constructor( private locationStrategy : LocationStrategy)
+  constructor
+  (private locationStrategy : LocationStrategy,
+  private db : DBService)
     {}
 
-  ngOnInit(): void
+  async ngOnInit()
     {this.preventBack();
-    this.closeMedia();}
+    this.closeMedia();
+    // await this.db.sayHello();
+    }
 
   public logout()
     {this.auth.signOut();}
@@ -39,4 +50,9 @@ export class MenuComponent implements OnInit {
       {med.getTracks()
       .forEach ( track =>
         {track.stop();});});}
+
+  // public test()
+  //   { console.log("test function working");
+  //     worker.postMessage('hello');
+  //   }
 }
