@@ -1,21 +1,46 @@
-import { Component, OnInit, ViewChild , AfterViewInit, ElementRef } from '@angular/core';
-import { ZXingScannerComponent } from '@zxing/ngx-scanner';
-import { Router } from '@angular/router';
+import { AfterViewInit, ChangeDetectorRef, Component } from '@angular/core';
+import Quagga from '@ericblade/quagga2';
 
-//import { ZXingScannerModule } from '@zxing/ngx-scanner';
-import adapter from 'webrtc-adapter';
-
-//import { Result } from '@zxing/library';
-import { BarcodeFormat } from '@zxing/library';
-import { Stream } from 'stream';
-
-// //const videoElement = document.querySelector('video');
-// const audioInputSelect = document.querySelector('select#audioSource');
-// const audioOutputSelect = document.querySelector('select#audioOutput');
-// const videoSelect = document.querySelector('select#videoSource');
-// const selectors = [audioInputSelect, audioOutputSelect, videoSelect];
-
-var choice!: string;
+const environmentFacingCameraLabelStrings: string[] = [
+  'rear',
+  'back',
+  'rück',
+  'arrière',
+  'trasera',
+  'trás',
+  'traseira',
+  'posteriore',
+  '后面',
+  '後面',
+  '背面',
+  '后置', // alternative
+  '後置', // alternative
+  '背置', // alternative
+  'задней',
+  'الخلفية',
+  '후',
+  'arka',
+  'achterzijde',
+  'หลัง',
+  'baksidan',
+  'bagside',
+  'sau',
+  'bak',
+  'tylny',
+  'takakamera',
+  'belakang',
+  'אחורית',
+  'πίσω',
+  'spate',
+  'hátsó',
+  'zadní',
+  'darrere',
+  'zadná',
+  'задня',
+  'stražnja',
+  'belakang',
+  'बैक'
+];
 
 @Component({
   selector: 'app-scanner',
@@ -24,187 +49,115 @@ var choice!: string;
 })
 export class ScannerComponent implements AfterViewInit {
 
-  @ViewChild('vidchoice')
-  vidchoice!: HTMLSelectElement;
+  started: boolean | undefined;
+  errorMessage: string | undefined;
+  acceptAnyCode = true;
+  totalPrice: number = 0;
 
-  @ViewChild('scanner', {static: true})
-  scanner!: ZXingScannerComponent;
+  constructor() {
+  }
 
-  // @ViewChild('ddiv', {static: true})
-  // ddiv!: ElementRef<HTMLDivElement>
+  ngAfterViewInit(): void {
+    if (!navigator.mediaDevices || !(typeof navigator.mediaDevices.getUserMedia === 'function')) {
+      this.errorMessage = 'getUserMedia is not supported';
+      return;
+    }
 
-  allowedFormats = [ BarcodeFormat.QR_CODE, BarcodeFormat.EAN_13, BarcodeFormat.CODE_128, BarcodeFormat.DATA_MATRIX /*, ...*/ ];
+    this.initializeScanner();
 
-  hasDevices!: boolean;
-  hasPermission!: boolean;
+  }
 
-  // qrResultString!: string;
-  // //qrResult!: Result;
+  private initializeScanner(): Promise<void> {
+    if (!navigator.mediaDevices || !(typeof navigator.mediaDevices.getUserMedia === 'function')) {
+      this.errorMessage = 'getUserMedia is not supported. Please use Chrome on Android or Safari on iOS';
+      this.started = false;
+      return Promise.reject(this.errorMessage);
+    }
 
-  //currentDevice = choice;
-  availableDevices?: MediaDeviceInfo[];
-  currentDevice!: MediaDeviceInfo;
+    // enumerate devices and do some heuristics to find a suitable first camera
+    return Quagga.CameraAccess.enumerateVideoDevices()
+      .then(mediaDeviceInfos => {
+        const mainCamera = this.getMainBarcodeScanningCamera(mediaDeviceInfos);
+        if (mainCamera) {
+          console.log(`Using ${mainCamera.label} (${mainCamera.deviceId}) as initial camera`);
+          return this.initializeScannerWithDevice(mainCamera.deviceId);
+        } else {
+          console.error(`Unable to determine suitable camera, will fall back to default handling`);
+          return this.initializeScannerWithDevice(undefined);
+        }
+      })
+      .catch(error => {
+        this.errorMessage = `Failed to enumerate devices: ${error}`;
+        this.started = false;
+      });
+  }
 
-  constraints : MediaStreamConstraints =
-  {audio : false ,
-  video : true
-  // { deviceId: choice ? {exact : choice} : undefined }
-    // {width: 640,
-    // height: 640
-    // { facingMode: "environment" }
-  };
+  private initializeScannerWithDevice(preferredDeviceId: string | undefined): Promise<void> {
+    console.log(`Initializing Quagga scanner...`);
 
-  constructor( private router : Router)
-  {}
+    const constraints: MediaTrackConstraints = {};
+    if (preferredDeviceId) {
+      // if we have a specific device, we select that
+      constraints.deviceId = preferredDeviceId;
+    } else {
+      // otherwise we tell the browser we want a camera facing backwards (note that browser does not always care about this)
+      constraints.facingMode = 'environment';
+    }
 
-
-    async ngAfterViewInit()
-    {
-
-      const videoSelect = document.querySelector('select#videoSource');
-      // const videoSelect = this.vidchoice;
-
-      const stream = await navigator.mediaDevices.getUserMedia(this.constraints);
-
-      await navigator.mediaDevices.enumerateDevices()
-        .then( eee => {
-          for (let i = 0; i !== eee.length; ++i) {
-            const deviceInfo = eee[i];
-            const option = document.createElement('option');
-            option.value = deviceInfo.deviceId;
-            if (deviceInfo.kind === 'videoinput') {
-              option.text = deviceInfo.label;
-              videoSelect?.appendChild(option);
+    return Quagga.init({
+        inputStream: {
+          type: 'LiveStream',
+          constraints,
+          area: { // defines rectangle of the detection/localization area
+            top: '25%',    // top offset
+            right: '10%',  // right offset
+            left: '10%',   // left offset
+            bottom: '25%'  // bottom offset
+          },
+          target: document.querySelector('#scanner-container') ?? undefined
+        },
+        decoder: {
+          readers: ['ean_reader'],
+          multiple: false
+        },
+        // See: https://github.com/ericblade/quagga2/blob/master/README.md#locate
+        locate: false
+      },
+      (err) => {
+        if (err) {
+          console.error(`Quagga initialization failed: ${err}`);
+          this.errorMessage = `Initialization error: ${err}`;
+          this.started = false;
+        } else {
+          console.log(`Quagga initialization succeeded`);
+          Quagga.start();
+          this.started = true;
+          Quagga.onDetected((res) => {
+            if (res.codeResult.code) {
+              window.alert(`code: ${res.codeResult.code}`);
+              // this.onBarcodeScanned(res.codeResult.code);
             }
-          }
-        });
-
-      // videoSelect.onchange = this.start;
-
-      // const stream = await navigator.mediaDevices.getUserMedia({video: {deviceId: {exact: choice}}});
-      // const test = await this.scanner.updateVideoInputDevices();
-
-      // //this.scanner.reset()
-
-      // //this.scanner.device = test[0];
-      // //choice = test[0].deviceId;
-      // const aaa = test[2];
-      // choice = aaa.deviceId;
-      // this.scanner.device = aaa;
-      // console.log("objective is ", aaa);
-      // console.log("device = ", this.scanner.device);
-      // //console.log(aaa);
-
-      const video = document.querySelector('video');
-      video!.srcObject = stream;
-      video!.onloadedmetadata = function(e)
-        {video!.play();}
-
-
-      // console.log("device 2 = ", this.scanner.device);
-      //this.start();
-
-      //console.log(this.router.url)
-
-    // try {
-    //   //this.scanner.askForPermission();
-    //   const stream = navigator.mediaDevices.getUserMedia(this.constraints);
-    //   // this.handleSuccess(stream);
-    // }
-    // catch (e)
-    // {
-    //   console.log(":(   // ", e);
-    // }
-
-    //choice = this.availableDevices
-
-    // this.scanner.camerasFound.subscribe(
-    //   (cameras: MediaDeviceInfo[]) =>
-    //     {
-    //       //console.log('first camera ', cameras);
-    //       if (cameras && cameras.length > 0) {
-    //       this.hasDevices = true;
-    //       var temp = cameras[3]
-    //       this.currentDevice = temp ;
-    //       this.choice = temp.deviceId;
-    //       console.log('after selection', temp);
-    //       // cameras.find(
-    //       //   (c) =>
-    //       //     c.label.includes('back')) || cameras[0];
-    //     }}
-    //   );
-
+          });
+        }
+      });
   }
 
-  public async start() {
-    console.log("WE SEE IT CHANGES")
-    navigator.mediaDevices.getUserMedia(this.constraints)
-    .then ( med =>
-      {med.getTracks()
-      .forEach ( track =>
-        {track.stop();});});
-    const videoSource = this.vidchoice.value;
-
-
-    console.log(this.vidchoice.v)
-
-
-    const constraints = {
-      audio: false,
-      video: {deviceId: videoSource ? {exact: videoSource} : undefined}
-    };
-    const stream = await navigator.mediaDevices.getUserMedia(constraints);
-    const video = document.querySelector('video');
-    video!.srcObject = stream;
-    video!.onloadedmetadata = function(e)
-      {video!.play();}
+  onBarcodeScanned(code: string) {
+    console.log("NNNTTTTTMMM");
   }
 
 
+  private isKnownBackCameraLabel(label: string): boolean {
+    const labelLowerCase = label.toLowerCase();
+    return environmentFacingCameraLabelStrings.some(str => {
+      return labelLowerCase.includes(str);
+    });
+  }
 
-  // private launch(video : any)
-  //   {navigator.mediaDevices.getUserMedia(this.constraints)
-  //     .then(stream =>
-  //       { console.log('scanner is ', this.scanner);
-  //         console.log('video is ', video);
-  //         console.log('stream is ', stream);
-  //         console.log('camera is ', this.currentDevice);
-  //         video!.srcObject = stream;
-  //         //this.scanner.device = this.currentDevice;
-  //       }
-  //     );}
-
-  private async handleSuccess(stream : MediaStream) {
-    this.scanner.askForPermission();
-
-
-    // navigator.mediaDevices.enumerateDevices()
-    //   .then( aaa =>
-    //     {
-    //       console.log(aaa);
-    //       choice = aaa[1].deviceId
-    //     });
-
-
-    // const test = await this.scanner.updateVideoInputDevices();
-    // const aaa = test[3];
-    // console.log(aaa);
-    // choice = aaa.deviceId;
-
-    //console.log(adapter.extractVersion);
-
-    // .then( aaa =>
-    //   {
-    //     console.log(aaa);
-    //     choice = aaa[0].deviceId
-    //   });
-
-    const video = document.querySelector('video');
-    video!.srcObject = stream;
-    video!.onloadedmetadata = function(e)
-      {video!.play();}
-    //console.log('after loading ',this.currentDevice)
+  private getMainBarcodeScanningCamera(devices: MediaDeviceInfo[]): MediaDeviceInfo | undefined {
+    const backCameras = devices.filter(v => this.isKnownBackCameraLabel(v.label));
+    const sortedBackCameras = backCameras.sort((a, b) => a.label.localeCompare(b.label));
+    return sortedBackCameras.length > 0 ? sortedBackCameras[0] : undefined;
   }
 
 }
-

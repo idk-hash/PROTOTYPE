@@ -23,10 +23,10 @@ import { provideAuth,getAuth } from '@angular/fire/auth';
 import { provideDatabase,getDatabase } from '@angular/fire/database';
 import { provideStorage,getStorage } from '@angular/fire/storage';
 import { provideFirestore, getFirestore } from '@angular/fire/firestore';
+
 import { SignInComponent } from './sign-in/sign-in.component';
 import { SignUpComponent } from './sign-up/sign-up.component';
 
-import { ZXingScannerModule } from '@zxing/ngx-scanner';
 
 // const routes: Routes = [
 //   { path: 'abd', component: AbdComponent},
@@ -62,7 +62,6 @@ const routes: Routes = [
     HomeComponent
   ],
   imports: [
-    ZXingScannerModule,
     FormsModule,
     ReactiveFormsModule,
     BrowserModule,
