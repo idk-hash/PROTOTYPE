@@ -30,9 +30,8 @@ export class MenuComponent implements OnInit {
   private db : DBService)
     {}
 
-  async ngOnInit()
+  ngOnInit()
     {this.preventBack();
-    this.closeMedia();
     // await this.db.sayHello();
     }
 
@@ -43,13 +42,6 @@ export class MenuComponent implements OnInit {
     {history.pushState(null, "", location.href);
     this.locationStrategy.onPopState(() => {
     history.pushState(null, "", location.href);});}
-
-  private closeMedia()
-    {navigator.mediaDevices.getUserMedia(this.constraints)
-    .then ( med =>
-      {med.getTracks()
-      .forEach ( track =>
-        {track.stop();});});}
 
   // public test()
   //   { console.log("test function working");

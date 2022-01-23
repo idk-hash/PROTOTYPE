@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { LocationStrategy } from '@angular/common';
+import { Router } from '@angular/router';
 
 //import { getFirestore,collection, addDoc, doc, onSnapshot } from "firebase/firestore";
 
@@ -10,13 +11,18 @@ import { LocationStrategy } from '@angular/common';
 })
 export class HomeComponent implements OnInit {
 
-  constructor(private locationStrategy : LocationStrategy)
+  constructor(private locationStrategy : LocationStrategy,
+              private router: Router)
     {}
 
   ngOnInit()
     {history.pushState(null, "", location.href);
     this.locationStrategy.onPopState(() => {
     history.pushState(null, "", location.href);});}
+
+  sign(choice : boolean)
+  {if(choice) {this.router.navigate(['sign_in'])}
+  else {this.router.navigate(['sign_up'])}}
 
  }
 

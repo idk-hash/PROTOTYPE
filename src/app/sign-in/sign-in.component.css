@@ -1,36 +1,40 @@
 body {
-  border-radius: 25px;
-  border: 2px solid rgb(250, 198, 119);
-  background: rgb(250, 255, 219);
-  margin-left: 20vw;
-  margin-top: 10vh;
-  width: 60vw;
-  height: 60vh;
+  /* border: 2px solid rgb(250, 198, 119); */
+  height: 100vh;
+  background: linear-gradient(135deg, rgba(255,255,255,1) 0%, rgba(255,255,255,1) 25%, rgb(0, 29, 92) 25.1%, rgb(0, 65, 119) 30%, rgb(82, 186, 255) 100%);
 }
 
 #welcome {
-  padding-top: 15vh;
+  padding-top: 5em;
+  padding-bottom: 1vh;
   text-align: center;
+  font-size: 3em;
+  color: white;
 }
 
 input {
-  margin-top: 2vh;
-  margin-left: 15vw;
-  width: 30vw;
-  height: 3vh;
+  background-color: rgb(0, 0, 0);
+  border-radius: 4px;
+  border: 0px;
+  margin-top: 1em;
+  margin-left: 5vw;
+  width: 90vw;
+  height: 3em;
   text-align: center;
+  box-shadow: inset 0px 0px 5px rgb(68, 90, 189);
+  caret-color: white;
+  color: white;
 }
 
 #signin {
-  margin-left: 20vw;
-  margin-top: 2vh;
+  margin-left: 27.5vw;
+  margin-top: 2em;
   width: 20vw;
-  height: 5vh;
+  height: 3em;
 }
 
 #switch {
-  margin-left: 20vw;
-  margin-top: 10vh;
+  margin-left: 5vw;
   width: 20vw;
-  height: 5vw;
+  height: 3em;
 }

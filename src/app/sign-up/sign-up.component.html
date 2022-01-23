@@ -1,28 +1,45 @@
 <body>
-  <p id="welcome">sign-up works!</p>
+  <p id="welcome">Sign Up</p>
   <form [formGroup]="form" (ngSubmit)="onSubmit()">
     <div class="form-group">
-        <input type="text" formControlName="username" />
+      <input class="input" type="name" formControlName="firstName" placeholder="First Name" required="true" />
+    </div>
+    <div class="form-group">
+      <input class="input" type="name" formControlName="lastName" placeholder="Last Name" required="true"/>
+    </div>
+    <div class="form-group">
+      <input class="input" type="text" formControlName="uni" placeholder="NTU Number" required="true"/>
+    </div>
+    <div class="form-group">
+      <select class="date" id="day" formControlName="day" required="true">
+      </select>
+      <select class="date" id="month" formControlName="month" placeholder="Month" required="true">
+      </select>
+      <select class="date" id="year" formControlName="year" placeholder="Year" required="true">
+      </select>
+    </div>
+    <div class="form-group">
+        <input class="input" type="text" formControlName="username" placeholder="Email" required="true"/>
         <!-- <div *ngIf="submitted && f.username.errors" class="invalid-feedback">
           <div *ngIf="f.username.errors.required">Username is required</div>
         </div> -->
     </div>
     <div class="form-group">
-        <input type="password" formControlName="password" />
+        <input class="input" type="password" formControlName="password" placeholder="Password" required="true"/>
         <!-- <div *ngIf="submitted && f.password.errors" class="invalid-feedback">
           <div *ngIf="f.password.errors.required">Password is required</div>
       </div> -->
     </div>
     <div class="form-group">
-      <button id="signin" [disabled]="loading">
+      <button id="signup" [disabled]="loading">
         <!-- <span *ngIf="loading" class="spinner-border spinner-border-sm mr-1"></span> -->
         Register
       </button>
+      <button id="switch" class="button" (click)="this.switch()">Sign In</button>
     </div>
   </form>
 
   <!-- <input id="log" class="input" type="text" name="email"><br>
   <input id="log2" class="input" type="password" name="password"><br>
   <button id="signin" class="button"  >Sign In</button> -->
-  <button id="switch" class="button" (click)="this.switch()">Sign Up</button>
 </body>

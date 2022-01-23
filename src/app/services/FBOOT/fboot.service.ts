@@ -21,9 +21,13 @@ export class FBOOT {
     this.auth.onAuthStateChanged(
       (user) =>
         {if (user)
-          { this.router.navigate(['menu']); }
+          {
+            // TODO : implement LOBBY for Accounts to be ACTIVATED
+
+            this.router.navigate(['menu']);
+          }
         else
-          { this.router.navigate(['home/sign_in']); }
+          { this.router.navigate(['home/sign_up']); }
         }
       );
     }

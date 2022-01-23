@@ -48,6 +48,6 @@ export class SignInComponent implements OnInit {
     }
 
   public switch()
-    {this.router.navigate(['home/sign_up'])}
+    {this.router.navigate(['sign_up'])}
 
 }

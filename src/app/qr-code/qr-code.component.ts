@@ -23,6 +23,7 @@ export class QrCodeComponent implements OnInit {
       displayValue: false,
       margin: 0}
       );
+      
       for (let i = 0; i < canvas.width; i++) {
         var p = c.getImageData(i, 0, 1, 1).data;
         code_data[i] = p[0];}

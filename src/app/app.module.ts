@@ -26,6 +26,7 @@ import { provideFirestore, getFirestore } from '@angular/fire/firestore';
 
 import { SignInComponent } from './sign-in/sign-in.component';
 import { SignUpComponent } from './sign-up/sign-up.component';
+import { LobbyComponent } from './lobby/lobby.component';
 
 
 // const routes: Routes = [
@@ -59,7 +60,8 @@ const routes: Routes = [
     RolePowerComponent,
     SignInComponent,
     SignUpComponent,
-    HomeComponent
+    HomeComponent,
+    LobbyComponent
   ],
   imports: [
     FormsModule,
