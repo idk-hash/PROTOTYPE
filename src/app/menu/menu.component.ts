@@ -26,8 +26,7 @@ export class MenuComponent implements OnInit {
   };
 
   constructor
-  (private locationStrategy : LocationStrategy,
-  private db : DBService)
+    (private locationStrategy : LocationStrategy)
     {}
 
   ngOnInit()

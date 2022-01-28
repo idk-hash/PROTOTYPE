@@ -43,9 +43,7 @@ const routes: Routes = [
   { path: 'QR Code', component: QrCodeComponent},
   { path: 'Rating', component: RatingComponent},
   { path: 'Role Power', component: RolePowerComponent},
-  { path: 'home', component: HomeComponent, children:[
-    { path: 'sign_in', component: SignInComponent},
-    { path: 'sign_up', component: SignUpComponent}]},
+  { path: 'home', component: HomeComponent},
   { path: 'sign_in', component: SignInComponent},
   { path: 'sign_up', component: SignUpComponent}
 ];
@@ -92,4 +90,5 @@ export class AppModule {
 
   constructor()
   {}
+
 }

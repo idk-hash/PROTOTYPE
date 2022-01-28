@@ -21,8 +21,8 @@ export class HomeComponent implements OnInit {
     history.pushState(null, "", location.href);});}
 
   sign(choice : boolean)
-  {if(choice) {this.router.navigate(['sign_in'])}
-  else {this.router.navigate(['sign_up'])}}
+    {if(choice) {this.router.navigate(['sign_in'])}
+    else {this.router.navigate(['sign_up'])}}
 
  }
 

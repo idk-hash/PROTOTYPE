@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router'
-import { getAuth, createUserWithEmailAndPassword , signInWithEmailAndPassword , EmailAuthProvider} from "firebase/auth";
+import { getAuth, signInWithEmailAndPassword } from "firebase/auth";
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 
 @Component({
@@ -22,8 +22,7 @@ export class SignInComponent implements OnInit {
   ngOnInit(): void
     {this.form = this.formBuilder.group({
       username: ['', Validators.required],
-      password: ['', Validators.required]
-    });
+      password: ['', Validators.required]});
     }
 
   get f() { return this.form.controls; }
