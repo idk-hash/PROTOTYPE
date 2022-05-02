@@ -4,10 +4,12 @@ import { Routes, RouterModule } from '@angular/router';
 import { CookieService } from 'ngx-cookie-service';
 import { HttpClientModule } from '@angular/common/http';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
+import { MatDialogModule } from '@angular/material/dialog';
+// import { OverlayModule } from '@angular/cdk/overlay';
 
 import { AppComponent } from './app.component';
-import { MenuComponent } from './menu/menu.component';
-import { ScannerComponent } from './scanner/scanner.component';
+import { MenuComponent, DialogDataExampleDialogBBB } from './menu/menu.component';
+import { ScannerComponent, DialogDataExampleDialogAAA } from './scanner/scanner.component';
 import { QrCodeComponent } from './qr-code/qr-code.component';
 import { RatingComponent } from './rating/rating.component';
 import { RolePowerComponent } from './role-power/role-power.component';
@@ -27,6 +29,7 @@ import { provideFirestore, getFirestore } from '@angular/fire/firestore';
 import { SignInComponent } from './sign-in/sign-in.component';
 import { SignUpComponent } from './sign-up/sign-up.component';
 import { LobbyComponent } from './lobby/lobby.component';
+import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 
 
 // const routes: Routes = [
@@ -59,7 +62,9 @@ const routes: Routes = [
     SignInComponent,
     SignUpComponent,
     HomeComponent,
-    LobbyComponent
+    LobbyComponent,
+    DialogDataExampleDialogBBB,
+    DialogDataExampleDialogAAA
   ],
   imports: [
     FormsModule,
@@ -72,7 +77,9 @@ const routes: Routes = [
     provideAuth(() => getAuth()),
     provideDatabase(() => getDatabase()),
     provideStorage(() => getStorage()),
-    provideFirestore(() => getFirestore())
+    provideFirestore(() => getFirestore()),
+    BrowserAnimationsModule,
+    MatDialogModule
   ],
   exports: [
     RouterModule

@@ -1,22 +1,6 @@
-/* zxing-scanner {
-  width: 100vw;
-}
+video
+  {width: 100vw;
+  padding-top: 12.5vh;}
 
-
-
-header {
-
-  position: sticky;
-  top: 0;
-  padding: 10px;
-  background: #333;
-}
-
-.results {
-
-  position: sticky;
-  bottom: 0;
-  padding: 15px;
-  background: #02c3c3;
-  color: #fff;
-} */
+canvas
+  {display: none;}

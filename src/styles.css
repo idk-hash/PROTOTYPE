@@ -4,6 +4,9 @@
   src: url(Helvetica.ttf);
 }
 
+@import '~@angular/material/prebuilt-themes/indigo-pink.css';
+
+
 * {
   margin: 0;
   padding: 0;
@@ -11,5 +14,24 @@
 }
 
 body {
-  background: rgb(156, 70, 152);
+  background: rgb(0, 0, 0);
+}
+
+img {
+  width: 50vw;
+  padding-left: 25vw;
+  padding-top: 30vh;
+}
+
+html, body { height: 100%; }
+body { margin: 0; font-family: Roboto, "Helvetica Neue", sans-serif; }
+
+.cdk-overlay-container, .cdk-overlay-pane {
+  position: absolute;
+}
+
+.mat-dialog-container {
+  box-shadow: 0px 11px 15px -7px rgb(0 0 0 / 20%), 0px 24px 38px 3px rgb(0 0 0 / 14%), 0px 9px 46px 8px rgb(0 0 0 / 12%);
+  background: #424242;
+  color: #fff;
 }

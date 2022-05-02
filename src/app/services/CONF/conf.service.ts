@@ -5,6 +5,8 @@ import { Injectable } from '@angular/core';
 })
 
 export class CONF {
-
+  public points : number = 0;
+  
   constructor() {}
+
 }

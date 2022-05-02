@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import { CONF } from '../services/CONF/conf.service';
 
 @Component({
   selector: 'app-rating',
@@ -7,9 +8,10 @@ import { Component, OnInit } from '@angular/core';
 })
 export class RatingComponent implements OnInit {
 
-  constructor() { }
+  constructor(public conf : CONF)
+    {}
 
-  ngOnInit(): void {
-  }
+  ngOnInit(): void
+    {document.getElementById('points')!.innerText = this.conf.points.toString();}
 
 }

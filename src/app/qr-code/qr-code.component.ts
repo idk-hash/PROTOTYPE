@@ -13,21 +13,28 @@ export class QrCodeComponent implements OnInit {
 
   ngOnInit(): void {
     const canvas = <HTMLCanvasElement> document.getElementById("barcode");
+    const canvas1 = <HTMLCanvasElement> document.getElementById("barcode1");
+    const canvas2 = <HTMLCanvasElement> document.getElementById("barcode2");
     const c = <CanvasRenderingContext2D> canvas.getContext("2d");
-    //canvas.style.visibility = "hidden";
     const code_data = [];
-
-    JsBarcode(canvas,"Please help me",
-      {width:2,
-      height:20,
-      displayValue: false,
-      margin: 0}
-      );
-      
-      for (let i = 0; i < canvas.width; i++) {
-        var p = c.getImageData(i, 0, 1, 1).data;
-        code_data[i] = p[0];}
-      console.log(code_data);
-      //console.log(i, " = ", p[0], p[1], p[2])
-  }
+    const HH = 100;
+    // JsBarcode(canvas,"Please help me",
+    //   { width:2,
+    //     height:HH,
+    //     displayValue: true,
+    //     margin: 10 });
+    JsBarcode(canvas1,"points plus 10",
+      { width:2,
+        height:HH,
+        displayValue: true,
+        margin: 10 });
+    // JsBarcode(canvas2,"record profile",
+    //   { width:2,
+    //     height:HH,
+    //     displayValue: true,
+    //     margin: 10 });
+    for (let i = 0; i < canvas.width; i++)
+      { var p = c.getImageData(i, 0, 1, 1).data;
+        code_data[i] = p[0]; }
+    console.log(code_data);}
 }
